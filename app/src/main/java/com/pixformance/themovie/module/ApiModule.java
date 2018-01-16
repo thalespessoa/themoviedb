@@ -3,6 +3,7 @@ package com.pixformance.themovie.module;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pixformance.themovie.data.NetworkApi;
+import com.pixformance.themovie.data.SearchDataSource;
 
 import java.io.IOException;
 
@@ -63,5 +64,11 @@ public class ApiModule {
     @Singleton
     public NetworkApi getSearchService() {
         return mRetrofit.create(NetworkApi.class);
+    }
+
+    @Provides
+    @Singleton
+    public SearchDataSource getSearchDataSource(NetworkApi networkApi) {
+        return new SearchDataSource(networkApi);
     }
 }

@@ -11,30 +11,31 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.pixformance.themovie.R;
-import com.pixformance.themovie.data.NetworkApi;
-import com.pixformance.themovie.data.ServiceCallback;
+import com.pixformance.themovie.data.SearchDataSource;
 import com.pixformance.themovie.data.model.Movie;
 import com.pixformance.themovie.data.model.SearchResult;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
-import okhttp3.Headers;
 
 /**
  * Created by thalespessoa on 1/16/18.
  */
 
-public class SearchListFragment extends Fragment implements SearchListContract.View, SearchView.OnQueryTextListener {
+public class SearchListFragment extends Fragment implements
+        SearchView.OnQueryTextListener,
+        MoviesAdapter.MoviesAdapterCallback,
+        SearchDataSource.SearchDataSourceCallback<SearchResult> {
 
     OnSelectMovie onSelectMovie;
 
     @Inject
-    NetworkApi mNetworkApi;
-
-    SearchListContract.Presenter mPresenter;
+    SearchDataSource mSearchDataSource;
 
     @BindView(R.id.search_view)
     SearchView mSearchView;
@@ -42,6 +43,9 @@ public class SearchListFragment extends Fragment implements SearchListContract.V
     RecyclerView mMoviesRecyclerView;
 
     MoviesAdapter mMoviesAdapter;
+    String mCurrentQuery;
+    int mCurrentPage;
+    int mLastPageRequested;
 
     public void setOnSelectMovie(OnSelectMovie onSelectMovie) {
         this.onSelectMovie = onSelectMovie;
@@ -65,39 +69,56 @@ public class SearchListFragment extends Fragment implements SearchListContract.V
         mSearchView.setOnQueryTextListener(this);
 
         mMoviesAdapter = new MoviesAdapter();
-        mMoviesAdapter.setOnSelectMovie(new MoviesAdapter.OnSelectMovie() {
-            @Override
-            public void onSelectMovie(Movie movie) {
-                onSelectMovie.onSelectMovie(movie);
-            }
-        });
+        mMoviesAdapter.setMoviesAdapterCallback(this);
         mMoviesRecyclerView.setAdapter(mMoviesAdapter);
         mMoviesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
 
+    // SearchView
+
     @Override
     public boolean onQueryTextSubmit(String query) {
-        System.out.println("SearchListFragment.onQueryTextSubmit: "+query);
-        mNetworkApi.search(query, 1).enqueue(new ServiceCallback<SearchResult>() {
-            @Override
-            public void onSuccess(Headers headers, SearchResult response) {
-                mMoviesAdapter.setMovies(response.getResults());
-            }
-
-            @Override
-            public void onError(String exception) {
-
-            }
-        });
+        mCurrentQuery = query;
+        mCurrentPage = 1;
+        mLastPageRequested = 1;
+        mMoviesAdapter.setMovies(new ArrayList<Movie>());
+        mSearchDataSource.search(mCurrentQuery, mCurrentPage, this);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        System.out.println("SearchListFragment.onQueryTextChange: "+newText);
         return false;
+    }
+
+    // Scroll
+
+    @Override
+    public void onSelectMovie(Movie movie) {
+        onSelectMovie.onSelectMovie(movie);
+    }
+
+    @Override
+    public void onScrolledDown() {
+        if(mLastPageRequested == mCurrentPage) {
+            mSearchDataSource.search(mCurrentQuery, ++mLastPageRequested, this);
+        }
+    }
+
+    // Data Source
+
+    @Override
+    public void onFetchSuccess(int page, SearchResult searchResult) {
+        System.out.println("SearchListFragment.onFetchSuccess");
+        mCurrentPage = mLastPageRequested;
+        mMoviesAdapter.addMovies(searchResult.getResults());
+    }
+
+    @Override
+    public void onError(String httpException) {
+
     }
 
 }

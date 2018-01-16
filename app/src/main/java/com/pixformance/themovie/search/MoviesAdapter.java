@@ -11,6 +11,7 @@ import com.pixformance.themovie.R;
 import com.pixformance.themovie.data.model.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,21 +23,21 @@ import butterknife.ButterKnife;
 
 public class MoviesAdapter extends RecyclerView.Adapter {
 
-    List<Movie> mMovies;
+    List<Movie> mMovies = new ArrayList<>();
 
-    OnSelectMovie onSelectMovie;
+    MoviesAdapterCallback moviesAdapterCallback;
 
-    public void setOnSelectMovie(OnSelectMovie onSelectMovie) {
-        this.onSelectMovie = onSelectMovie;
+    public void setMoviesAdapterCallback(MoviesAdapterCallback moviesAdapterCallback) {
+        this.moviesAdapterCallback = moviesAdapterCallback;
     }
 
-    interface OnSelectMovie {
+    interface MoviesAdapterCallback {
         void onSelectMovie(Movie movie);
+        void onScrolledDown();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
         return new MovieViewHolder(view);
     }
@@ -56,18 +57,26 @@ public class MoviesAdapter extends RecyclerView.Adapter {
         movieViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelectMovie.onSelectMovie(movie);
+                moviesAdapterCallback.onSelectMovie(movie);
             }
         });
+        if(position == getItemCount()-1) {
+            moviesAdapterCallback.onScrolledDown();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mMovies == null ? 0 : mMovies.size();
+        return mMovies.size();
     }
 
     public void setMovies(List<Movie> movies) {
         this.mMovies = movies;
+        notifyDataSetChanged();
+    }
+
+    public void addMovies(List<Movie> movies) {
+        mMovies.addAll(movies);
         notifyDataSetChanged();
     }
 
