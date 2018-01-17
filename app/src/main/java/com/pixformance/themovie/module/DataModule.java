@@ -1,9 +1,12 @@
 package com.pixformance.themovie.module;
 
+import android.app.Application;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pixformance.themovie.data.NetworkApi;
-import com.pixformance.themovie.data.SearchDataSource;
+import com.pixformance.themovie.data.DataSource;
+import com.pixformance.themovie.data.local.SuggestionsPersistence;
+import com.pixformance.themovie.data.remote.NetworkApi;
 
 import java.io.IOException;
 
@@ -11,6 +14,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -25,14 +30,14 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Dagger module to Pixformance NetworkApi. This class exposes the NetworkApi as Java classes.
  */
 @Module
-public class ApiModule {
+public class DataModule {
 
     private static String API_URL = "https://api.themoviedb.org";
     private static String API_KEY = "2696829a81b1b5827d515ff121700838";
 
     private Retrofit mRetrofit;
 
-    public ApiModule() {
+    public DataModule(Application application) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -58,6 +63,16 @@ public class ApiModule {
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
+
+
+        Realm.init(application);
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
     @Provides
@@ -66,9 +81,16 @@ public class ApiModule {
         return mRetrofit.create(NetworkApi.class);
     }
 
+
     @Provides
     @Singleton
-    public SearchDataSource getSearchDataSource(NetworkApi networkApi) {
-        return new SearchDataSource(networkApi);
+    public SuggestionsPersistence getSuggestionsPersistence() {
+        return new SuggestionsPersistence();
+    }
+
+    @Provides
+    @Singleton
+    public DataSource getSearchDataSource(NetworkApi networkApi, SuggestionsPersistence suggestionsPersistence) {
+        return new DataSource(networkApi, suggestionsPersistence);
     }
 }

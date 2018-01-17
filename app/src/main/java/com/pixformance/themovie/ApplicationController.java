@@ -3,6 +3,8 @@ package com.pixformance.themovie;
 import android.app.Application;
 import android.app.Fragment;
 
+import com.pixformance.themovie.module.DataModule;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -20,7 +22,10 @@ public class ApplicationController extends Application implements HasFragmentInj
 	@Override
     public void onCreate() {
         super.onCreate();
-        DaggerApplicationComponent.create().inject(this);
+        DaggerApplicationComponent.builder()
+                .dataModule(new DataModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override

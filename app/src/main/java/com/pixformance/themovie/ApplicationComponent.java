@@ -1,6 +1,6 @@
 package com.pixformance.themovie;
 
-import com.pixformance.themovie.module.ApiModule;
+import com.pixformance.themovie.module.DataModule;
 import com.pixformance.themovie.module.AppModule;
 
 import javax.inject.Singleton;
@@ -13,6 +13,9 @@ import dagger.android.AndroidInjector;
  * Dagger component to handle dependency injection
  */
 @Singleton
-@Component(modules = {AndroidInjectionModule.class, AppModule.class, ApiModule.class})
+@Component(modules = {
+        AndroidInjectionModule.class,
+        AppModule.class,
+        DataModule.class})
 public interface ApplicationComponent extends AndroidInjector<ApplicationController> {
 }

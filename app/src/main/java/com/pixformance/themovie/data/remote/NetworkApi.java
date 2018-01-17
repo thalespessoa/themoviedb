@@ -1,4 +1,4 @@
-package com.pixformance.themovie.data;
+package com.pixformance.themovie.data.remote;
 
 import com.pixformance.themovie.data.model.SearchResult;
 
