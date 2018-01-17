@@ -8,7 +8,7 @@ import com.pixformance.themovie.data.model.Movie;
 
 public class SearchActivity extends AppCompatActivity implements SearchListFragment.OnSelectMovie{
 
-    SearchListFragment mSearchListFragment;
+    private SearchListFragment mSearchListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

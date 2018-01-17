@@ -23,9 +23,9 @@ import butterknife.ButterKnife;
 
 public class SuggestionAdapter extends RecyclerView.Adapter {
 
-    List<String> mSuggestion = new ArrayList<>();
+    private List<String> mSuggestion = new ArrayList<>();
 
-    SuggestionAdapterCallback mSuggestionAdapterCallback;
+    private SuggestionAdapterCallback mSuggestionAdapterCallback;
 
     public void setSuggestionAdapterCallback(SuggestionAdapterCallback suggestionAdapterCallback) {
         this.mSuggestionAdapterCallback = suggestionAdapterCallback;

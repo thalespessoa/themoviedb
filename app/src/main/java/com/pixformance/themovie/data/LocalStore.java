@@ -1,9 +1,8 @@
-package com.pixformance.themovie.data.local;
+package com.pixformance.themovie.data;
 
 import android.os.Handler;
 import android.os.Looper;
 
-import com.pixformance.themovie.data.DataSource;
 import com.pixformance.themovie.data.model.SearchSuggestion;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import io.realm.RealmResults;
  * Created by thalespessoa on 1/16/18.
  */
 
-public class SuggestionsPersistence {
+public class LocalStore {
 
 
     public void search(final String term, final DataSource.OnFecthSuggestion onFecthSuggestion) {

@@ -5,8 +5,8 @@ import android.app.Application;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pixformance.themovie.data.DataSource;
-import com.pixformance.themovie.data.local.SuggestionsPersistence;
-import com.pixformance.themovie.data.remote.NetworkApi;
+import com.pixformance.themovie.data.LocalStore;
+import com.pixformance.themovie.data.NetworkApi;
 
 import java.io.IOException;
 
@@ -84,13 +84,13 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public SuggestionsPersistence getSuggestionsPersistence() {
-        return new SuggestionsPersistence();
+    public LocalStore getSuggestionsPersistence() {
+        return new LocalStore();
     }
 
     @Provides
     @Singleton
-    public DataSource getSearchDataSource(NetworkApi networkApi, SuggestionsPersistence suggestionsPersistence) {
-        return new DataSource(networkApi, suggestionsPersistence);
+    public DataSource getSearchDataSource(NetworkApi networkApi, LocalStore localStore) {
+        return new DataSource(networkApi, localStore);
     }
 }

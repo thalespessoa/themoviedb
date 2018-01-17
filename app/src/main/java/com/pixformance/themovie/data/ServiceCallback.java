@@ -1,4 +1,4 @@
-package com.pixformance.themovie.data.remote;
+package com.pixformance.themovie.data;
 
 import okhttp3.Headers;
 import retrofit2.Call;

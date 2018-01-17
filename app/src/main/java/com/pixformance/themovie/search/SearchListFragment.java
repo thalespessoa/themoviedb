@@ -13,8 +13,8 @@ import android.widget.SearchView;
 import com.pixformance.themovie.R;
 import com.pixformance.themovie.data.DataSource;
 import com.pixformance.themovie.data.model.Movie;
+import com.pixformance.themovie.data.model.SearchResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,25 +32,25 @@ public class SearchListFragment extends Fragment implements
         MoviesAdapter.MoviesAdapterCallback,
         SuggestionAdapter.SuggestionAdapterCallback,
         DataSource.OnFecthMovies,
-        DataSource.OnFecthSuggestion {
-
-    OnSelectMovie onSelectMovie;
+        DataSource.OnFecthSuggestion,
+        View.OnFocusChangeListener{
 
     @Inject
-    DataSource mDataSource;
+    protected DataSource mDataSource;
 
     @BindView(R.id.search_view)
-    SearchView mSearchView;
+    protected SearchView mSearchView;
     @BindView(R.id.rv_movies)
-    RecyclerView mMoviesRecyclerView;
+    protected RecyclerView mMoviesRecyclerView;
     @BindView(R.id.rv_suggestions)
-    RecyclerView mSuggestionRecyclerView;
+    protected RecyclerView mSuggestionRecyclerView;
 
-    MoviesAdapter mMoviesAdapter;
-    SuggestionAdapter mSuggestionAdapter;
-    String mCurrentQuery;
-    int mCurrentPage;
-    int mLastPageRequested;
+    private OnSelectMovie onSelectMovie;
+    private MoviesAdapter mMoviesAdapter;
+    private SuggestionAdapter mSuggestionAdapter;
+    private String mCurrentQuery;
+    private int mCurrentPage;
+    private int mLastPageRequested;
 
     public void setOnSelectMovie(OnSelectMovie onSelectMovie) {
         this.onSelectMovie = onSelectMovie;
@@ -72,17 +72,7 @@ public class SearchListFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
         mSearchView.setOnQueryTextListener(this);
-        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    mDataSource.searchSuggestion(mSearchView.getQuery().toString(), SearchListFragment.this);
-                    mSuggestionRecyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    mSuggestionRecyclerView.setVisibility(View.GONE);
-                }
-            }
-        });
+        mSearchView.setOnQueryTextFocusChangeListener(this);
 
         mMoviesAdapter = new MoviesAdapter();
         mMoviesAdapter.setMoviesAdapterCallback(this);
@@ -97,6 +87,18 @@ public class SearchListFragment extends Fragment implements
         return view;
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(v == mSearchView) {
+            if(hasFocus) {
+                mDataSource.searchSuggestion(mSearchView.getQuery().toString(), SearchListFragment.this);
+                mSuggestionRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                mSuggestionRecyclerView.setVisibility(View.GONE);
+            }
+        }
+    }
+
     // SearchView
 
     @Override
@@ -104,7 +106,7 @@ public class SearchListFragment extends Fragment implements
         mCurrentQuery = query;
         mCurrentPage = 1;
         mLastPageRequested = 1;
-        mMoviesAdapter.setMovies(new ArrayList<Movie>());
+        mMoviesAdapter.clear();
         mDataSource.search(mCurrentQuery, mCurrentPage, this);
         return false;
     }
@@ -147,9 +149,9 @@ public class SearchListFragment extends Fragment implements
 
 
     @Override
-    public void onFetchSuccess(int page, List<Movie> movies) {
-        mCurrentPage = mLastPageRequested;
-        mMoviesAdapter.addMovies(movies);
+    public void onFetchSuccess(int page, SearchResult searchResult) {
+        mCurrentPage = searchResult.getPage();
+        mMoviesAdapter.addMovies(searchResult.getResults(), searchResult.getPage() == searchResult.getTotalPages());
     }
 
     @Override

@@ -1,10 +1,7 @@
 package com.pixformance.themovie.data;
 
-import com.pixformance.themovie.data.local.SuggestionsPersistence;
 import com.pixformance.themovie.data.model.Movie;
 import com.pixformance.themovie.data.model.SearchResult;
-import com.pixformance.themovie.data.remote.NetworkApi;
-import com.pixformance.themovie.data.remote.ServiceCallback;
 
 import java.util.List;
 
@@ -16,12 +13,12 @@ import okhttp3.Headers;
 
 public class DataSource {
 
-    NetworkApi mNetworkApi;
-    SuggestionsPersistence mSuggestionsPersistence;
+    private NetworkApi mNetworkApi;
+    private LocalStore mLocalStore;
 
 
     public interface OnFecthMovies {
-        void onFetchSuccess(int page, List<Movie> movies);
+        void onFetchSuccess(int page, SearchResult searchResult);
         void onError(String httpException);
     }
 
@@ -29,17 +26,17 @@ public class DataSource {
         void onFetchSuccess(List<String> suggestions);
     }
 
-    public DataSource(NetworkApi networkApi, SuggestionsPersistence suggestionsPersistence) {
+    public DataSource(NetworkApi networkApi, LocalStore localStore) {
         mNetworkApi = networkApi;
-        mSuggestionsPersistence = suggestionsPersistence;
+        mLocalStore = localStore;
     }
 
     public void search(final String term, final int page, final OnFecthMovies onFecthMovies) {
         mNetworkApi.search(term, page).enqueue(new ServiceCallback<SearchResult>() {
             @Override
             public void onSuccess(Headers headers, SearchResult response) {
-                mSuggestionsPersistence.save(term);
-                onFecthMovies.onFetchSuccess(page, response.getResults());
+                mLocalStore.save(term);
+                onFecthMovies.onFetchSuccess(page, response);
             }
 
             @Override
@@ -50,6 +47,6 @@ public class DataSource {
     }
 
     public void searchSuggestion(String term, final OnFecthSuggestion onFecthSuggestion) {
-        mSuggestionsPersistence.search(term, onFecthSuggestion);
+        mLocalStore.search(term, onFecthSuggestion);
     }
 }
