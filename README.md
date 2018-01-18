@@ -19,12 +19,14 @@ External libraries:
 ======= Approach
 
 Data access layer.
+
 The data access layer are composed for 3 main classes:
  - LocalStore: It's responsible to manage the local data base. In these case the app are using Realm as data base. We can change the data base to any another, modifying only this class, with no impact on the project structure.
  - NetworkApi: It's responsible to mange the remote data access, communicating with the server using Retrofit.
  - DataProvider: This class manage the other two (NetworkApi and LocalStore) and provide data to the application. The rest of application never know if the data came from local db or from server.
 
-Screens layer
+Screens layer.
+
 For the screens was used fragments, to made the app modular and make possible different layouts to tablet and phone.
 Main classes:
  - SearchListFragment: It's responsible for perform the search (communicating with DataProvider class) and shows the result
