@@ -30,6 +30,8 @@ public class DetailsFragment extends Fragment {
 
     Movie mMovie;
 
+    @BindView(R.id.tv_title)
+    TextView mTitleTextView;
     @BindView(R.id.tv_description)
     TextView mDescriptionTextView;
     @BindView(R.id.tv_vote)
@@ -81,6 +83,7 @@ public class DetailsFragment extends Fragment {
         this.mMovie = movie;
 
         mDescriptionTextView.setText(mMovie.getOverview());
+        mTitleTextView.setText(mMovie.getTitle());
         mVoteTextView.setText(TextUtil.formatAvarageVote(movie));
         if(movie.getVoteCount() == 0) {
             mVoteCountTextView.setText(R.string.no_votes);
