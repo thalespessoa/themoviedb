@@ -7,29 +7,29 @@ import com.pixformance.themovie.module.DataModule;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasFragmentInjector;
 
 /**
  * Main app class. This setups applications modules and start routines
  */
-public class ApplicationController extends Application implements HasFragmentInjector {
+public class ApplicationController extends Application {
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
+    private ApplicationComponent applicationComponent;
+
 	@Override
     public void onCreate() {
         super.onCreate();
-        DaggerApplicationComponent.builder()
+        applicationComponent = DaggerApplicationComponent.builder()
                 .dataModule(new DataModule(this))
-                .build()
-                .inject(this);
+                .build();
+
+//        applicationComponent.inject(this);
     }
 
-    @Override
-    public AndroidInjector<Fragment> fragmentInjector() {
-        return dispatchingAndroidInjector;
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 }

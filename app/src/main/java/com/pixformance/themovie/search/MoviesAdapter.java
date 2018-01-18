@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.pixformance.themovie.R;
 import com.pixformance.themovie.data.model.Movie;
+import com.pixformance.themovie.util.TextUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,12 +55,11 @@ public class MoviesAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
         if(getItemViewType(position) == TYPE_MOVIE) {
             final Movie movie = mMovies.get(position);
             MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
             movieViewHolder.title.setText(movie.getTitle());
-            movieViewHolder.vote.setText(String.valueOf(movie.getVoteAverage()));
+            movieViewHolder.vote.setText(TextUtil.formatAvarageVote(movie));
             Picasso.with(movieViewHolder.poster.getContext())
                     .load(String.format("https://image.tmdb.org/t/p/w92/%s",movie.getPosterPath()))
                     .fit()

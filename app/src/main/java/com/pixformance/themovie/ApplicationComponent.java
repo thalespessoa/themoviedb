@@ -1,7 +1,7 @@
 package com.pixformance.themovie;
 
 import com.pixformance.themovie.module.DataModule;
-import com.pixformance.themovie.module.AppModule;
+import com.pixformance.themovie.search.SearchListFragment;
 
 import javax.inject.Singleton;
 
@@ -13,9 +13,7 @@ import dagger.android.AndroidInjector;
  * Dagger component to handle dependency injection
  */
 @Singleton
-@Component(modules = {
-        AndroidInjectionModule.class,
-        AppModule.class,
-        DataModule.class})
-public interface ApplicationComponent extends AndroidInjector<ApplicationController> {
+@Component(modules = {DataModule.class})
+public interface ApplicationComponent {
+    void inject(SearchListFragment fragment);
 }

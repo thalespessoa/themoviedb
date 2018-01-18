@@ -19,7 +19,7 @@ public class Movie implements Serializable {
     @JsonProperty("vote_average")
     float voteAverage;
     @JsonProperty("vote_count")
-    float voteCount;
+    int voteCount;
 
     public String getTitle() {
         return title;
@@ -37,7 +37,7 @@ public class Movie implements Serializable {
         return voteAverage;
     }
 
-    public float getVoteCount() {
+    public int getVoteCount() {
         return voteCount;
     }
 }

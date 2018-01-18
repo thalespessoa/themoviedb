@@ -6,18 +6,19 @@ import android.os.Looper;
 import com.pixformance.themovie.data.model.SearchSuggestion;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by thalespessoa on 1/16/18.
  */
 
 public class LocalStore {
-
 
     public void search(final String term, final DataSource.OnFecthSuggestion onFecthSuggestion) {
         Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
@@ -26,11 +27,16 @@ public class LocalStore {
                 RealmQuery query = realm.where(SearchSuggestion.class)
                         .contains("text", term);
 
-                RealmResults<SearchSuggestion> realmObjects = query.findAll();
+                RealmResults<SearchSuggestion> realmObjects = query.findAll().sort("date", Sort.DESCENDING);
 
                 List<String> result = new ArrayList<>();
-                for(SearchSuggestion searchSuggestion:realmObjects) {
-                    result.add(searchSuggestion.getText());
+                for(int i=0; i<realmObjects.size(); i++) {
+                    SearchSuggestion searchSuggestion = realmObjects.get(i);
+                    if(i<=10) {
+                        result.add(searchSuggestion.getText());
+                    } else {
+                        searchSuggestion.deleteFromRealm();
+                    }
                 }
                 final List<String> resultFinal = result;
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -49,6 +55,7 @@ public class LocalStore {
             public void execute(Realm realm) {
                 SearchSuggestion searchSuggestion = new SearchSuggestion();
                 searchSuggestion.setText(suggestion);
+                searchSuggestion.setDate(new Date());
                 realm.copyToRealmOrUpdate(searchSuggestion);
             }
         });

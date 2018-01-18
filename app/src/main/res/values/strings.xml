@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">The Movie</string>
+    <string name="no_movie_found">No movie was found</string>
+    <string name="vote_count">votes count\n%s</string>
+    <string name="no_votes">Nobody has rated so far</string>
+    <string name="internet_error">Unknown error.\nPlease check your internet</string>
+    <string name="generic_error">Ops... Something is wrong. Please try again later</string>
 </resources>

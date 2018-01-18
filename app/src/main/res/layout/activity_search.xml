@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pixformance.themovie.search.SearchActivity">
+    tools:context="com.pixformance.themovie.MainActivity">
 
-    <fragment android:name="com.pixformance.themovie.search.SearchListFragment"
+    <FrameLayout
         android:id="@+id/fragment_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
 </android.support.constraint.ConstraintLayout>
