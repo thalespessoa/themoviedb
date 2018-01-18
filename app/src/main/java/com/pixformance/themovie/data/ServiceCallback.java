@@ -6,6 +6,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
+ * Callback to handle retrofit results
+ * 
  * Created by thalespessoa on 1/16/18.
  */
 

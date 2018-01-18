@@ -19,6 +19,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * Details screen
+ *
  * Created by thalespessoa on 1/16/18.
  */
 
@@ -71,6 +73,10 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Shows movie information on the screen
+     * @param movie
+     */
     public void showMovieDetails(Movie movie) {
         this.mMovie = movie;
 

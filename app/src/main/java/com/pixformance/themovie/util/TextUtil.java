@@ -11,6 +11,11 @@ import com.pixformance.themovie.data.model.Movie;
  */
 
 public class TextUtil {
+    /**
+     * Format vote average to friendly text
+     * @param movie
+     * @return Friendly vote average
+     */
     static public String formatAvarageVote(Movie movie) {
         float vote = movie.getVoteAverage();
         int numberInt = (int) vote;
@@ -23,6 +28,12 @@ public class TextUtil {
         }
     }
 
+    /**
+     * Translate error codes to error messages
+     * @param context
+     * @param code
+     * @return Error message
+     */
     static public String getErrorMessage(Context context, int code) {
         if(code == HttpException.ERROR_EMPTY) {
             return context.getResources().getString(R.string.no_movie_found);

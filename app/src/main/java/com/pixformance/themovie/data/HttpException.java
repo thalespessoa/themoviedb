@@ -10,6 +10,8 @@ import java.util.Map;
 import retrofit2.Response;
 
 /**
+ * Custom class exception to abstract all types of exceptions and fails
+ *
  * Created by thalespessoa on 1/17/18.
  */
 

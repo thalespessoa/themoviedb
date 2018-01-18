@@ -10,6 +10,12 @@ import com.pixformance.themovie.data.model.Movie;
 import com.pixformance.themovie.search.DetailsFragment;
 import com.pixformance.themovie.search.SearchListFragment;
 
+/**
+ * Main class responsible to manage the navigation and comunnication of the
+ * screens (Search list and details).
+ * In case of tablets boths screens are showed at the same time
+ * In case of phones the screens are showed once a time
+ */
 public class MainActivity extends AppCompatActivity implements
         SearchListFragment.OnSelectMovie,
         FragmentManager.OnBackStackChangedListener{

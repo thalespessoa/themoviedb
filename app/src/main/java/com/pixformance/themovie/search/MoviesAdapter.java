@@ -34,6 +34,10 @@ public class MoviesAdapter extends RecyclerView.Adapter {
 
     private MoviesAdapterCallback moviesAdapterCallback;
 
+    /**
+     * Callback to handle movie selections and 'next page' call
+     * @param moviesAdapterCallback
+     */
     public void setMoviesAdapterCallback(MoviesAdapterCallback moviesAdapterCallback) {
         this.moviesAdapterCallback = moviesAdapterCallback;
     }
@@ -99,14 +103,21 @@ public class MoviesAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * Clean list
+     */
     public void clear() {
         this.mMovies = new ArrayList<>();
         notifyDataSetChanged();
         mSize = 0;
     }
 
+    /**
+     * Add more movies on the list
+     * @param movies
+     * @param lastPage
+     */
     public void addMovies(List<Movie> movies, boolean lastPage) {
-        System.out.println("MoviesAdapter.addMovies: "+lastPage);
         mMovies.addAll(movies);
         notifyDataSetChanged();
         mSize = mMovies.size();

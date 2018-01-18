@@ -17,6 +17,9 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 /**
+ * Class responsible for the local database.
+ * All local database access comes from here.
+ *
  * Created by thalespessoa on 1/16/18.
  */
 
@@ -32,6 +35,13 @@ public class LocalStore {
 
         Realm.setDefaultConfiguration(realmConfiguration);
     }
+
+    /**
+     * Performs search of suggestions on the local data base
+     *
+     * @param term
+     * @param onFecthSuggestion
+     */
 
     public void search(final String term, final DataProvider.OnFecthSuggestion onFecthSuggestion) {
         Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
@@ -64,6 +74,11 @@ public class LocalStore {
         });
     }
 
+    /**
+     * Save search suggestion in the local data base
+     *
+     * @param suggestion
+     */
     public void save(final String suggestion) {
         Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
             @Override

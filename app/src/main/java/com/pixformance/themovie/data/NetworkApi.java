@@ -1,7 +1,5 @@
 package com.pixformance.themovie.data;
 
-import android.app.Application;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pixformance.themovie.data.model.SearchResult;
@@ -20,6 +18,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
+ * Class responsible for the communication with server
+ * All remote data access comes from here.
+ *
  * Created by thalespessoa on 1/16/18.
  */
 
@@ -59,6 +60,10 @@ public class NetworkApi {
                 .build();
     }
 
+    /**
+     * Don' call this. Only for dagger module
+     * @return
+     */
     public SearchApi createSearchApi() {
         return mRetrofit.create(SearchApi.class);
     }

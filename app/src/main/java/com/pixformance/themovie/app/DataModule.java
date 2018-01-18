@@ -12,6 +12,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * Dagger module responsible for create data providers
+ *
  * Created by thalespessoa on 1/15/18.
  */
 @Module

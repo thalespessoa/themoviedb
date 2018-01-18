@@ -8,6 +8,10 @@ import okhttp3.Headers;
 import retrofit2.Call;
 
 /**
+ * Class responsible for manage all data provided to the application.
+ * This class should be inject by Dagger in any place of the
+ * application that needs data access (remotely or locally)
+ *
  * Created by thalespessoa on 1/16/18.
  */
 
@@ -19,13 +23,23 @@ public class DataProvider {
     private OnFecthMovies onFetchMovies;
     private OnFecthSuggestion onFetchSuggestions;
 
+    /**
+     * Set listener to movies search
+     * @param onFecthMovies
+     */
     public void setOnFecthMovies(OnFecthMovies onFecthMovies) {
         this.onFetchMovies = onFecthMovies;
     }
 
+    /**
+     * Set listener to suggestions
+     * @param onFecthSuggestions
+     */
     public void setOnFecthSuggestions(OnFecthSuggestion onFecthSuggestions) {
         this.onFetchSuggestions = onFecthSuggestions;
     }
+
+    // Callback interfaces
 
     public interface OnFecthMovies {
         void onFetchMoviesSuccess(int page, SearchResult searchResult);
@@ -36,11 +50,19 @@ public class DataProvider {
         void onFetchSuggestionsSuccess(List<String> suggestions);
     }
 
+
     public DataProvider(NetworkApi.SearchApi networkApi, LocalStore localStore) {
         mSearchApi = networkApi;
         mLocalStore = localStore;
     }
 
+
+    /**
+     * Perform movie search remotely.
+     * Before call this method you need use 'setOnFecthMovies' method to listener results
+     *
+     * @param term word to be searched
+     */
     public void searchMovie(final String term, final int page) {
         if(mCurrentCall != null) {
             mCurrentCall.cancel();
@@ -73,6 +95,12 @@ public class DataProvider {
         });
     }
 
+    /**
+     * Perform suggestion search locally
+     * Before call this method you need use 'setOnFecthSuggestions' method to listener results
+     *
+     * @param term word to be searched
+     */
     public void searchSuggestion(String term) {
         mLocalStore.search(term, onFetchSuggestions);
     }

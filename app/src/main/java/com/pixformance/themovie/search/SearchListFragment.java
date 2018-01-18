@@ -29,6 +29,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * Search screen
+ *
  * Created by thalespessoa on 1/16/18.
  */
 
@@ -61,6 +63,10 @@ public class SearchListFragment extends Fragment implements
     private int mCurrentPage;
     private int mLastPageRequested;
 
+    /**
+     * Callback to handle movie selection
+     * @param onSelectMovie
+     */
     public void setOnSelectMovie(OnSelectMovie onSelectMovie) {
         this.onSelectMovie = onSelectMovie;
     }
@@ -116,7 +122,6 @@ public class SearchListFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("SearchListFragment.onResume: "+mMoviesAdapter.getMovies().size());
         if(mMoviesAdapter.getMovies().size() == 0) {
             mSearchView.requestFocus();
         } else {
