@@ -2,7 +2,7 @@ package com.pixformance.themovie.app;
 
 import android.app.Application;
 
-import com.pixformance.themovie.data.DataSource;
+import com.pixformance.themovie.data.DataProvider;
 import com.pixformance.themovie.data.LocalStore;
 import com.pixformance.themovie.data.NetworkApi;
 
@@ -44,7 +44,7 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public DataSource getSearchDataSource(NetworkApi.SearchApi networkApi, LocalStore localStore) {
-        return new DataSource(networkApi, localStore);
+    public DataProvider getSearchDataSource(NetworkApi.SearchApi networkApi, LocalStore localStore) {
+        return new DataProvider(networkApi, localStore);
     }
 }

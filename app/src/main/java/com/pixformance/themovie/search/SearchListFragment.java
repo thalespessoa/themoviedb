@@ -14,19 +14,19 @@ import android.widget.SearchView;
 
 import com.pixformance.themovie.app.ApplicationController;
 import com.pixformance.themovie.R;
-import com.pixformance.themovie.data.DataSource;
+import com.pixformance.themovie.data.DataProvider;
 import com.pixformance.themovie.data.HttpException;
 import com.pixformance.themovie.data.model.Movie;
 import com.pixformance.themovie.data.model.SearchResult;
 import com.pixformance.themovie.util.TextUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by thalespessoa on 1/16/18.
@@ -36,12 +36,12 @@ public class SearchListFragment extends Fragment implements
         SearchView.OnQueryTextListener,
         MoviesAdapter.MoviesAdapterCallback,
         SuggestionAdapter.SuggestionAdapterCallback,
-        DataSource.OnFecthMovies,
-        DataSource.OnFecthSuggestion,
+        DataProvider.OnFecthMovies,
+        DataProvider.OnFecthSuggestion,
         View.OnFocusChangeListener {
 
     @Inject
-    protected DataSource mDataSource;
+    protected DataProvider mDataProvider;
 
     @BindView(R.id.progress)
     protected ProgressBar mProgress;
@@ -51,6 +51,8 @@ public class SearchListFragment extends Fragment implements
     protected RecyclerView mMoviesRecyclerView;
     @BindView(R.id.rv_suggestions)
     protected RecyclerView mSuggestionRecyclerView;
+    @BindView(R.id.overlay)
+    protected View mOverlay;
 
     private OnSelectMovie onSelectMovie;
     private MoviesAdapter mMoviesAdapter;
@@ -85,6 +87,7 @@ public class SearchListFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
         mSearchView.setOnQueryTextFocusChangeListener(this);
+        mSearchView.setOnQueryTextListener(this);
 
         mMoviesAdapter.setMoviesAdapterCallback(this);
         mMoviesRecyclerView.setAdapter(mMoviesAdapter);
@@ -96,8 +99,8 @@ public class SearchListFragment extends Fragment implements
         mSuggestionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMoviesRecyclerView.setHasFixedSize(true);
 
-        mDataSource.setOnFecthMovies(this);
-        mDataSource.setOnFecthSuggestions(this);
+        mDataProvider.setOnFecthMovies(this);
+        mDataProvider.setOnFecthSuggestions(this);
 
         setRetainInstance(true);
 
@@ -107,21 +110,18 @@ public class SearchListFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mDataSource.setOnFecthMovies(null);
-        mDataSource.setOnFecthSuggestions(null);
+        mDataProvider.setOnFecthMovies(null);
+        mDataProvider.setOnFecthSuggestions(null);
     }
-
     @Override
-    public void onStart() {
-        super.onStart();
-        mSearchView.setOnQueryTextListener(this);
-        mSuggestionAdapter.setData(new ArrayList<String>());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mSearchView.setOnQueryTextListener(null);
+    public void onResume() {
+        super.onResume();
+        System.out.println("SearchListFragment.onResume: "+mMoviesAdapter.getMovies().size());
+        if(mMoviesAdapter.getMovies().size() == 0) {
+            mSearchView.requestFocus();
+        } else {
+            mMoviesRecyclerView.requestFocus();
+        }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ public class SearchListFragment extends Fragment implements
     @Override
     public void onScrolledDown() {
         if (mLastPageRequested == mCurrentPage) {
-            mDataSource.searchMovie(mCurrentQuery, ++mLastPageRequested);
+            mDataProvider.searchMovie(mCurrentQuery, ++mLastPageRequested);
         }
     }
 
@@ -153,14 +153,14 @@ public class SearchListFragment extends Fragment implements
         mLastPageRequested = 1;
         mMoviesAdapter.clear();
         mProgress.setVisibility(View.VISIBLE);
-        mDataSource.searchMovie(mCurrentQuery, mCurrentPage);
+        mDataProvider.searchMovie(mCurrentQuery, mCurrentPage);
         mMoviesRecyclerView.requestFocus();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        mDataSource.searchSuggestion(newText);
+        mDataProvider.searchSuggestion(newText);
         return false;
     }
 
@@ -168,16 +168,23 @@ public class SearchListFragment extends Fragment implements
     public void onFocusChange(View v, boolean hasFocus) {
         if (v == mSearchView) {
             if (hasFocus) {
-                mDataSource.searchSuggestion(mSearchView.getQuery().toString());
+                mDataProvider.searchSuggestion(mSearchView.getQuery().toString());
                 mSuggestionRecyclerView.setVisibility(View.VISIBLE);
+                mOverlay.setVisibility(View.VISIBLE);
             } else {
                 mSuggestionRecyclerView.setVisibility(View.GONE);
+                mOverlay.setVisibility(View.GONE);
             }
         }
     }
 
+    @OnClick(R.id.overlay)
+    public void onClickOverlay() {
+        mMoviesRecyclerView.requestFocus();
+    }
+
     // ---------------------------------------------------------------------------------------------
-    // Callbacks from DataSource
+    // Callbacks from DataProvider
     // ---------------------------------------------------------------------------------------------
 
     // Movies

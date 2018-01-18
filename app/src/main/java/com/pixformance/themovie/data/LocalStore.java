@@ -33,7 +33,7 @@ public class LocalStore {
         Realm.setDefaultConfiguration(realmConfiguration);
     }
 
-    public void search(final String term, final DataSource.OnFecthSuggestion onFecthSuggestion) {
+    public void search(final String term, final DataProvider.OnFecthSuggestion onFecthSuggestion) {
         Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -45,7 +45,7 @@ public class LocalStore {
                 List<String> result = new ArrayList<>();
                 for(int i=0; i<realmObjects.size(); i++) {
                     SearchSuggestion searchSuggestion = realmObjects.get(i);
-                    if(i<=10) {
+                    if(i<10) {
                         result.add(searchSuggestion.getText());
                     } else {
                         searchSuggestion.deleteFromRealm();

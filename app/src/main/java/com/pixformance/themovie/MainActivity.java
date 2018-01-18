@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements
         onBackStackChanged();
 
 
-        if(findViewById(R.id.fragment_details) != null) {
+        if(findViewById(R.id.fragment_details) != null) { // if is tablet, shows the screen splitted
             if(fragmentManager.findFragmentByTag(TAG_DETAIL) == null) {
                 mDetailsFragment = new DetailsFragment();
                 fragmentManager

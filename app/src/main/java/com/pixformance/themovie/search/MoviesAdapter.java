@@ -63,8 +63,8 @@ public class MoviesAdapter extends RecyclerView.Adapter {
             movieViewHolder.title.setText(movie.getTitle());
             movieViewHolder.vote.setText(TextUtil.formatAvarageVote(movie));
             Picasso.with(movieViewHolder.poster.getContext())
-                    .load(String.format(NetworkApi.IMAGES_PATH,movie.getPosterPath()))
-                    .fit()
+                    .load(String.format(NetworkApi.POSTER_PATH,movie.getPosterPath()))
+                    .fit().centerCrop()
                     .into(movieViewHolder.poster);
 
             if(!movie.getTitle().equals(movie.getOriginalTitle())) {
@@ -114,6 +114,10 @@ public class MoviesAdapter extends RecyclerView.Adapter {
         if(!lastPage) {
             mSize++;
         }
+    }
+
+    public List<Movie> getMovies() {
+        return mMovies;
     }
 
     // ViewHolders

@@ -11,7 +11,7 @@ import retrofit2.Call;
  * Created by thalespessoa on 1/16/18.
  */
 
-public class DataSource {
+public class DataProvider {
 
     private NetworkApi.SearchApi mSearchApi;
     private LocalStore mLocalStore;
@@ -36,7 +36,7 @@ public class DataSource {
         void onFetchSuggestionsSuccess(List<String> suggestions);
     }
 
-    public DataSource(NetworkApi.SearchApi networkApi, LocalStore localStore) {
+    public DataProvider(NetworkApi.SearchApi networkApi, LocalStore localStore) {
         mSearchApi = networkApi;
         mLocalStore = localStore;
     }

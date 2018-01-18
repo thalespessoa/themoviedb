@@ -88,8 +88,8 @@ public class DetailsFragment extends Fragment {
         } else {
             mPosterImageView.setVisibility(View.VISIBLE);
             Picasso.with(getActivity())
-                    .load(String.format(NetworkApi.IMAGES_PATH, mMovie.getPosterPath()))
-                    .fit()
+                    .load(String.format(NetworkApi.POSTER_PATH, mMovie.getPosterPath()))
+                    .fit().centerCrop()
                     .into(mPosterImageView);
         }
 
@@ -99,8 +99,8 @@ public class DetailsFragment extends Fragment {
         } else {
             mLandscapeImageView.setVisibility(View.VISIBLE);
             Picasso.with(getActivity())
-                    .load(String.format(NetworkApi.IMAGES_PATH, mMovie.getBackdropPath()))
-                    .fit()
+                    .load(String.format(NetworkApi.LANDSCAPE_PATH, mMovie.getBackdropPath()))
+                    .fit().centerCrop()
                     .into(mLandscapeImageView);
         }
     }

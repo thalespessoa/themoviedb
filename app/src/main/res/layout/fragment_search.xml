@@ -3,18 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBaseLight"/>
-
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/search_view"
+        android:layout_below="@+id/search_view"
         android:visibility="invisible"
         android:layout_marginTop="40dp"/>
 
@@ -22,16 +16,36 @@
         android:id="@+id/rv_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/search_view"
+        android:layout_below="@+id/search_view"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"/>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#CC000000"/>
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/colorBaseLight"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_suggestions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/search_view"
-        android:background="#FFFFFF"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:visibility="gone"
+        android:background="@color/colorBaseLight"
         android:clipToPadding="false"/>
 
 </com.pixformance.themovie.util.SlidingRelativeLayout>
