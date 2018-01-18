@@ -7,14 +7,19 @@
 
     <FrameLayout
         android:id="@+id/fragment_search"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"/>
+        android:layout_weight="6"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorBase"/>
 
     <FrameLayout
         android:id="@+id/fragment_details"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="6"/>
+        android:layout_weight="4"/>
 
 </LinearLayout>

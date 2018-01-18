@@ -22,6 +22,8 @@ public class Movie implements Serializable {
     float voteAverage;
     @JsonProperty("vote_count")
     int voteCount;
+    @JsonProperty("backdrop_path")
+    String backdropPath;
 
     public String getTitle() {
         return title;
@@ -45,5 +47,9 @@ public class Movie implements Serializable {
 
     public String getOriginalTitle() {
         return originalTitle;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
     }
 }

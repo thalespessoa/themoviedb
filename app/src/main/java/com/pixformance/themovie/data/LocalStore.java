@@ -1,5 +1,6 @@
 package com.pixformance.themovie.data;
 
+import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -19,6 +21,17 @@ import io.realm.Sort;
  */
 
 public class LocalStore {
+
+    public LocalStore(Application application){
+        Realm.init(application);
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(realmConfiguration);
+    }
 
     public void search(final String term, final DataSource.OnFecthSuggestion onFecthSuggestion) {
         Realm.getDefaultInstance().executeTransactionAsync(new Realm.Transaction() {
@@ -42,7 +55,9 @@ public class LocalStore {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        onFecthSuggestion.onFetchSuccess(resultFinal);
+                        if(onFecthSuggestion != null) {
+                            onFecthSuggestion.onFetchSuggestionsSuccess(resultFinal);
+                        }
                     }
                 });
             }

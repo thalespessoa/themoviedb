@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pixformance.themovie.R;
+import com.pixformance.themovie.data.NetworkApi;
 import com.pixformance.themovie.data.model.Movie;
 import com.pixformance.themovie.util.TextUtil;
 import com.squareup.picasso.Picasso;
@@ -85,7 +86,7 @@ public class DetailsFragment extends Fragment {
         } else {
             mPosterImageView.setVisibility(View.VISIBLE);
             Picasso.with(getActivity())
-                    .load(String.format("https://image.tmdb.org/t/p/w92/%s", mMovie.getPosterPath()))
+                    .load(String.format(NetworkApi.IMAGES_PATH, mMovie.getPosterPath()))
                     .fit()
                     .into(mPosterImageView);
         }

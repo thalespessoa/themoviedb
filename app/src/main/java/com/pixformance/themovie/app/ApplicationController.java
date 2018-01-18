@@ -23,11 +23,9 @@ public class ApplicationController extends Application {
         applicationComponent = DaggerApplicationComponent.builder()
                 .dataModule(new DataModule(this))
                 .build();
-
-//        applicationComponent.inject(this);
     }
 
-    public ApplicationComponent getApplicationComponent() {
+    public ApplicationComponent getAppComponent() {
         return applicationComponent;
     }
 }

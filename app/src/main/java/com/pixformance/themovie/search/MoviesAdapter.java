@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pixformance.themovie.R;
+import com.pixformance.themovie.data.NetworkApi;
 import com.pixformance.themovie.data.model.Movie;
 import com.pixformance.themovie.util.TextUtil;
 import com.squareup.picasso.Picasso;
@@ -55,13 +56,14 @@ public class MoviesAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        System.out.println("MoviesAdapter.onBindViewHolder: "+position);
         if(getItemViewType(position) == TYPE_MOVIE) {
             final Movie movie = mMovies.get(position);
             MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
             movieViewHolder.title.setText(movie.getTitle());
             movieViewHolder.vote.setText(TextUtil.formatAvarageVote(movie));
             Picasso.with(movieViewHolder.poster.getContext())
-                    .load(String.format("https://image.tmdb.org/t/p/w92/%s",movie.getPosterPath()))
+                    .load(String.format(NetworkApi.IMAGES_PATH,movie.getPosterPath()))
                     .fit()
                     .into(movieViewHolder.poster);
 
@@ -104,6 +106,7 @@ public class MoviesAdapter extends RecyclerView.Adapter {
     }
 
     public void addMovies(List<Movie> movies, boolean lastPage) {
+        System.out.println("MoviesAdapter.addMovies: "+lastPage);
         mMovies.addAll(movies);
         notifyDataSetChanged();
         mSize = mMovies.size();

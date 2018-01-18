@@ -1,6 +1,5 @@
 package com.pixformance.themovie.app;
 
-import com.pixformance.themovie.app.DataModule;
 import com.pixformance.themovie.search.SearchListFragment;
 
 import javax.inject.Singleton;

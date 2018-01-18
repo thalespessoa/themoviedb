@@ -13,54 +13,67 @@ import retrofit2.Call;
 
 public class DataSource {
 
-    private NetworkApi mNetworkApi;
+    private NetworkApi.SearchApi mSearchApi;
     private LocalStore mLocalStore;
     private Call mCurrentCall;
+    private OnFecthMovies onFetchMovies;
+    private OnFecthSuggestion onFetchSuggestions;
+
+    public void setOnFecthMovies(OnFecthMovies onFecthMovies) {
+        this.onFetchMovies = onFecthMovies;
+    }
+
+    public void setOnFecthSuggestions(OnFecthSuggestion onFecthSuggestions) {
+        this.onFetchSuggestions = onFecthSuggestions;
+    }
 
     public interface OnFecthMovies {
-        void onFetchSuccess(int page, SearchResult searchResult);
+        void onFetchMoviesSuccess(int page, SearchResult searchResult);
         void onError(HttpException httpException);
     }
 
     public interface OnFecthSuggestion {
-        void onFetchSuccess(List<String> suggestions);
+        void onFetchSuggestionsSuccess(List<String> suggestions);
     }
 
-    public DataSource(NetworkApi networkApi, LocalStore localStore) {
-        mNetworkApi = networkApi;
+    public DataSource(NetworkApi.SearchApi networkApi, LocalStore localStore) {
+        mSearchApi = networkApi;
         mLocalStore = localStore;
     }
 
-    public void search(final String term, final int page, final OnFecthMovies onFecthMovies) {
+    public void searchMovie(final String term, final int page) {
         if(mCurrentCall != null) {
             mCurrentCall.cancel();
         }
-        mCurrentCall = mNetworkApi.search(term, page);
+        mCurrentCall = mSearchApi.search(term, page);
         mCurrentCall.enqueue(new ServiceCallback<SearchResult>() {
             @Override
             public void onSuccess(Headers headers, SearchResult response) {
                 mCurrentCall = null;
                 if(response.getTotalResults() == 0) {
-                    onFecthMovies.onError(new HttpException(HttpException.ERROR_EMPTY));
+                    if(onFetchMovies != null) {
+                        onFetchMovies.onError(new HttpException(HttpException.ERROR_EMPTY));
+                    }
                 } else {
                     mLocalStore.save(term);
-                    onFecthMovies.onFetchSuccess(page, response);
+                    if(onFetchMovies != null) {
+                        onFetchMovies.onFetchMoviesSuccess(page, response);
+                    }
                 }
             }
 
             @Override
             public void onError(HttpException exception) {
                 mCurrentCall = null;
-                onFecthMovies.onError(exception);
+
+                if(onFetchMovies != null) {
+                    onFetchMovies.onError(exception);
+                }
             }
         });
     }
 
-    public void searchSuggestion(String term, final OnFecthSuggestion onFecthSuggestion) {
-        mLocalStore.search(term, onFecthSuggestion);
-    }
-
-    public void deleteSuggestion(String term, final OnFecthSuggestion onFecthSuggestion) {
-        mLocalStore.search(term, onFecthSuggestion);
+    public void searchSuggestion(String term) {
+        mLocalStore.search(term, onFetchSuggestions);
     }
 }
