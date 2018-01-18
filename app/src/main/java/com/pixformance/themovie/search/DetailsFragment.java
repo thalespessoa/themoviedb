@@ -36,6 +36,8 @@ public class DetailsFragment extends Fragment {
     TextView mVoteCountTextView;
     @BindView(R.id.iv_poster)
     ImageView mPosterImageView;
+    @BindView(R.id.iv_landscape)
+    ImageView mLandscapeImageView;
 
     public static DetailsFragment newInstance(Movie movie) {
         Bundle args = new Bundle();
@@ -89,6 +91,17 @@ public class DetailsFragment extends Fragment {
                     .load(String.format(NetworkApi.IMAGES_PATH, mMovie.getPosterPath()))
                     .fit()
                     .into(mPosterImageView);
+        }
+
+
+        if(mMovie.getBackdropPath() == null || mMovie.getBackdropPath().equals("")) {
+            mLandscapeImageView.setVisibility(View.GONE);
+        } else {
+            mLandscapeImageView.setVisibility(View.VISIBLE);
+            Picasso.with(getActivity())
+                    .load(String.format(NetworkApi.IMAGES_PATH, mMovie.getBackdropPath()))
+                    .fit()
+                    .into(mLandscapeImageView);
         }
     }
 }
