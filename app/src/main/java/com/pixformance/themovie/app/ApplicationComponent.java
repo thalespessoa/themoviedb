@@ -1,13 +1,11 @@
-package com.pixformance.themovie;
+package com.pixformance.themovie.app;
 
-import com.pixformance.themovie.module.DataModule;
+import com.pixformance.themovie.app.DataModule;
 import com.pixformance.themovie.search.SearchListFragment;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
-import dagger.android.AndroidInjector;
 
 /**
  * Dagger component to handle dependency injection

@@ -1,9 +1,9 @@
-package com.pixformance.themovie;
+package com.pixformance.themovie.app;
 
 import android.app.Application;
 import android.app.Fragment;
 
-import com.pixformance.themovie.module.DataModule;
+import com.pixformance.themovie.app.DaggerApplicationComponent;
 
 import javax.inject.Inject;
 

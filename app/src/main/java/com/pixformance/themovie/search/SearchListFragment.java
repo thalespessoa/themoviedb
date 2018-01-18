@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
-import com.pixformance.themovie.ApplicationController;
+import com.pixformance.themovie.app.ApplicationController;
 import com.pixformance.themovie.R;
 import com.pixformance.themovie.data.DataSource;
 import com.pixformance.themovie.data.HttpException;

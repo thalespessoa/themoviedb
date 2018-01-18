@@ -1,4 +1,4 @@
-package com.pixformance.themovie.module;
+package com.pixformance.themovie.app;
 
 import android.app.Application;
 
