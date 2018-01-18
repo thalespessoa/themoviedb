@@ -65,6 +65,13 @@ public class MoviesAdapter extends RecyclerView.Adapter {
                     .fit()
                     .into(movieViewHolder.poster);
 
+            if(!movie.getTitle().equals(movie.getOriginalTitle())) {
+                movieViewHolder.original.setText(String.format("(%s)", movie.getOriginalTitle()));
+                movieViewHolder.original.setVisibility(View.VISIBLE);
+            } else {
+                movieViewHolder.original.setVisibility(View.GONE);
+            }
+
             movieViewHolder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -114,6 +121,8 @@ public class MoviesAdapter extends RecyclerView.Adapter {
         View view;
         @BindView(R.id.tv_title)
         TextView title;
+        @BindView(R.id.tv_original_title)
+        TextView original;
         @BindView(R.id.tv_vote)
         TextView vote;
         @BindView(R.id.iv_poster)

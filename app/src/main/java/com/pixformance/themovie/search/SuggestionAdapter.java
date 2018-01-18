@@ -48,7 +48,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter {
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.title.setText(suggestion);
 
-        viewHolder.title.setOnClickListener(new View.OnClickListener() {
+        viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSuggestionAdapterCallback.onSelectSuggestion(suggestion);
@@ -68,6 +68,8 @@ public class SuggestionAdapter extends RecyclerView.Adapter {
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.view)
+        View view;
         @BindView(R.id.tv_title)
         TextView title;
 

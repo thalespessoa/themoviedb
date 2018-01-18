@@ -3,8 +3,6 @@ package com.pixformance.themovie.app;
 import android.app.Application;
 import android.app.Fragment;
 
-import com.pixformance.themovie.app.DaggerApplicationComponent;
-
 import javax.inject.Inject;
 
 import dagger.android.DispatchingAndroidInjector;

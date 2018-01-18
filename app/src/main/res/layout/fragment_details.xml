@@ -14,7 +14,8 @@
         <ImageView
             android:id="@+id/iv_poster"
             android:layout_width="match_parent"
-            android:layout_height="130dp" />
+            android:layout_height="130dp"
+            android:background="@color/colorBase"/>
 
         <TextView
             android:id="@+id/tv_vote"

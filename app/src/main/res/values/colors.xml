@@ -6,6 +6,7 @@
 
     <color name="colorBaseLight">#FFFFFF</color>
     <color name="colorBase">#D9D9D9</color>
+    <color name="colorBaseMid">#61696b</color>
     <color name="colorBaseDark">#333738</color>
 
     <color name="colorBad">#5c0000</color>

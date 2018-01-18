@@ -14,6 +14,8 @@ public class Movie implements Serializable {
 
     String title;
     String overview;
+    @JsonProperty("original_title")
+    String originalTitle;
     @JsonProperty("poster_path")
     String posterPath;
     @JsonProperty("vote_average")
@@ -39,5 +41,9 @@ public class Movie implements Serializable {
 
     public int getVoteCount() {
         return voteCount;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
     }
 }
