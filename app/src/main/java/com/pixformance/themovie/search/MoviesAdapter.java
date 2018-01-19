@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.pixformance.themovie.R;
 import com.pixformance.themovie.data.NetworkApi;
 import com.pixformance.themovie.data.model.Movie;
+import com.pixformance.themovie.util.ImageUtil;
 import com.pixformance.themovie.util.TextUtil;
 import com.squareup.picasso.Picasso;
 
@@ -60,16 +61,13 @@ public class MoviesAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        System.out.println("MoviesAdapter.onBindViewHolder: "+position);
         if(getItemViewType(position) == TYPE_MOVIE) {
             final Movie movie = mMovies.get(position);
             MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
             movieViewHolder.title.setText(movie.getTitle());
             movieViewHolder.vote.setText(TextUtil.formatAvarageVote(movie));
-            Picasso.with(movieViewHolder.poster.getContext())
-                    .load(String.format(NetworkApi.POSTER_PATH,movie.getPosterPath()))
-                    .fit().centerCrop()
-                    .into(movieViewHolder.poster);
+
+            ImageUtil.loadImage(movieViewHolder.poster, movie.getPosterPath());
 
             if(!movie.getTitle().equals(movie.getOriginalTitle())) {
                 movieViewHolder.original.setText(String.format("(%s)", movie.getOriginalTitle()));

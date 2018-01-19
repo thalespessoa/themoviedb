@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.pixformance.themovie.R;
 import com.pixformance.themovie.data.NetworkApi;
 import com.pixformance.themovie.data.model.Movie;
+import com.pixformance.themovie.util.ImageUtil;
 import com.pixformance.themovie.util.TextUtil;
 import com.squareup.picasso.Picasso;
 
@@ -96,10 +97,7 @@ public class DetailsFragment extends Fragment {
             mPosterImageView.setVisibility(View.GONE);
         } else {
             mPosterImageView.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(String.format(NetworkApi.POSTER_PATH, mMovie.getPosterPath()))
-                    .fit().centerCrop()
-                    .into(mPosterImageView);
+            ImageUtil.loadImage(mPosterImageView, mMovie.getPosterPath());
         }
 
 
@@ -107,10 +105,7 @@ public class DetailsFragment extends Fragment {
             mLandscapeImageView.setVisibility(View.GONE);
         } else {
             mLandscapeImageView.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(String.format(NetworkApi.LANDSCAPE_PATH, mMovie.getBackdropPath()))
-                    .fit().centerCrop()
-                    .into(mLandscapeImageView);
+            ImageUtil.loadImage(mLandscapeImageView, mMovie.getBackdropPath());
         }
     }
 }

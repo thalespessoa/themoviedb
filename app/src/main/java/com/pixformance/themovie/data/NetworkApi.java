@@ -26,8 +26,7 @@ import retrofit2.http.Query;
 
 public class NetworkApi {
 
-    public static String POSTER_PATH = "https://image.tmdb.org/t/p/w185/%s";
-    public static String LANDSCAPE_PATH = "https://image.tmdb.org/t/p/w780/%s";
+    public static String IMAGE_PATH = "https://image.tmdb.org/t/p/w%d%s";
     private static String API_URL = "https://api.themoviedb.org";
     private static String API_KEY = "2696829a81b1b5827d515ff121700838";
 
